@@ -16,13 +16,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Enable CORS
 app.UseCors(options =>
 {
-    options.WithOrigins("https://localhost:7290", "http://localhost:5260")
-           .AllowAnyHeader()
-           .AllowAnyMethod();
+    // Allow any origin during development,
+    // the SetIsOriginAllowed method is used to explicitly allow any origin during development
+    // more safer than allowany orrigin
+
+    options
+        .SetIsOriginAllowed(origin => true)
+        .AllowAnyHeader()
+        .AllowAnyMethod();
 });
+
 
 app.UseHttpsRedirection();
 
