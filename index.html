@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,45 +46,63 @@
             color: #e74c3c;
             font-weight: bold;
         }
+
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
+
 <body>
     <header>
         <h1>Assignment 2 Grove & Dean Insurance Services</h1>
     </header>
 
     <div id="userData">
-        <script>
-            $(document).ready(function () {
-                const userId = 1; // Example user ID
-
-                $.ajax({
-                    url: `https://localhost:7290/api/test/${userId}`,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data && data.length > 0) {
-                            $('#userData').html('<h2>User Posts:</h2>');
-                            data.forEach(post => {
-                                $('#userData').append(`
-                                            <div class="post">
-                                                <p><strong>Title:</strong> ${post.title}</p>
-                                                <p><strong>Body:</strong> ${post.body}</p>
-                                            </div>
-                                        `);
-                            });
-                        } else {
-                            $('#userData').html('<p class="error">No posts found for this user.</p>');
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        $('#userData').html('<p class="error">Error retrieving data from the API</p>');
-                    }
-                });
-            });
-        </script>
+        <div id="loading">Loading...</div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            const userId = 1; // Example user ID
+            const userDataContainer = $('#userData');
+            const loadingContainer = $('#loading');
+
+            // Show loading message
+            loadingContainer.show();
+
+            $.ajax({
+                url: `https://localhost:7290/api/test/${userId}`,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    loadingContainer.hide(); // Hide loading message
+
+                    if (data && data.length > 0) {
+                        userDataContainer.html('<h2>User Posts: Show a list of dummy data</h2>');
+                        data.forEach(post => {
+                            userDataContainer.append(`
+                                    <div class="post">
+                                        <p><strong>Title:</strong> ${post.title}</p>
+                                        <p><strong>Body:</strong> ${post.body}</p>
+                                    </div>
+                                `);
+                        });
+                    } else {
+                        userDataContainer.html('<p class="error">No posts found for this user.</p>');
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    loadingContainer.hide(); // Hide loading message
+                    userDataContainer.html('<p class="error">Error retrieving data from the API</p>');
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
