@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TestAPITask2;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -21,7 +22,7 @@ public class TestController : ControllerBase
             {
                 var response = await httpClient.GetStringAsync(apiUrl);
 
-                var userData = JsonConvert.DeserializeObject<dynamic>(response);
+                var userData = JsonConvert.DeserializeObject<ICollection<Post>>(response);
 
                 return Ok(userData);
             }
